@@ -15,5 +15,10 @@
   "bugs": {
     "url": "https://github.com/space-cadetz/space-server/issues"
   },
-  "homepage": "https://github.com/space-cadetz/space-server#readme"
+  "homepage": "https://github.com/space-cadetz/space-server#readme",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^9.0.2",
+    "express": "^4.17.1"
+  }
 }
