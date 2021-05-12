@@ -1,5 +1,11 @@
 # 🤝🏼 Space Cadetz Team Agreement
 
+## T E A M 
++ [Edward-Regalado](https://github.com/Edward-Regalado)
++ [Marie Marcos](https://github.com/Mmarcos01)
++ [Matt Santorsola](https://github.com/santorsm)
++ [Aloysious](https://github.com/AL0YSI0US)
+
 ## Cooperation Plan
 
 **What are the key strengths of each person on the team?**
