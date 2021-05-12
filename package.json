@@ -1,0 +1,19 @@
+{
+  "name": "space-server",
+  "version": "1.0.0",
+  "description": "Server for the spaced-out-app",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/space-cadetz/space-server.git"
+  },
+  "author": "Space Cadetz",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/space-cadetz/space-server/issues"
+  },
+  "homepage": "https://github.com/space-cadetz/space-server#readme"
+}
