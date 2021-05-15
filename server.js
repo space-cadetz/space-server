@@ -22,9 +22,9 @@ const userProfile = new User({
   favoriteImages: [
     {
       title: 'howling wolf',
-      date: '05.20.2021',
-      explaination: 'stufffffffffffffffffffffff',
-      url: '',
+      date: '2021-05-15',
+      explaination: 'stufffffffffffffffffffffff and things',
+      url: 'https://zen-varahamihira-8a9600.netlify.app/static/media/wolf-space.1cd72378.jpg',
     }
   ]
 });
