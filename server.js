@@ -17,6 +17,7 @@ mongoose.connect(process.env.DATABASE_URL, { useNewUrlParser: true, useUnifiedTo
 
 
 const UserModel = require('./models/User');
+const User = require('./models/User');
 
 // const userProfile = new UserModel({
 //   // userEmail: 'aloysiousx@gmail.com',
@@ -46,30 +47,58 @@ app.get('/', (req, res) => {
   res.send('🚀 Hello Fellow Space Cadet');
 });
 
-app.post('/insert', async (req, res) => {
+app.post('/insert', (req, res) => {
   console.log(req.body);
-
-  const { email, title, date, url} = req.body;
-  // const newImage = { title, date, url};
-  // console.log(newImage);
-
-  const userProfile = await new UserModel({
-    userEmail: email,
-    favoriteImages: [
-      {
-        title,
-        date,
-        url,
-      }
-    ],
-  }).save();
-  console.log('successfully saved', userProfile);
-  res.send('🚀 Hello Fellow Space Cadet');
+  User.find({ email: req.body.userEmail }, (err, userData) => {
+    if (userData.length < 1) {
+      let newUser = new User({
+        email: req.body.userEmail,
+        favoriteImages: [
+          {
+            title: req.body.title,
+            date: req.body.date,
+            url: req.body.url,
+          }
+        ],
+      });
+      newUser.save().then(newUserData => {
+        res.send(newUserData.favoriteImages);
+      });
+    } else {
+      let user = userData[0];
+      user.favoriteImages.push({
+        title: req.body.title,
+        date: req.body.date,
+        url: req.body.url,
+      });
+      user.save().then((userData) => {
+        console.log(userData);
+        res.send(userData.favoriteImages);
+      });
+    }
+  });
 });
 
+// const { email, title, date, url } = req.body;
+// const newImage = { title, date, url};
+// console.log(newImage);
+
+// const userProfile = await new UserModel({
+//   userEmail: email,
+//   favoriteImages: [
+//     {
+//       title,
+//       date,
+//       url,
+//     }
+//   ],
+// }).save();
+// console.log('successfully saved', userProfile);
+// res.send('🚀 Hello Fellow Space Cadet');
+
 app.get('/userdata', (req, res) => {
-  UserModel.find((arr,userData) => {
-    res.send(userData)
+  UserModel.find((arr, userData) => {
+    res.send(userData);
   });
 });
 
