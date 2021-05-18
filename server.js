@@ -15,6 +15,7 @@ const mongoose = require('mongoose');
 // hey mongoose, connect to the database at localhost:27017
 mongoose.connect(process.env.DATABASE_URL, { useNewUrlParser: true, useUnifiedTopology: true });
 
+
 const UserModel = require('./models/User');
 
 // const userProfile = new UserModel({
@@ -27,7 +28,6 @@ const UserModel = require('./models/User');
 //   //     url: 'https://zen-varahamihira-8a9600.netlify.app/static/media/wolf-space.1cd72378.jpg',
 //   //   }
 //   // ],
-
 //   // userEmail: 'matt.santorsola@gmail.com',
 //   // favoriteImages: [
 //   //   {
@@ -37,9 +37,7 @@ const UserModel = require('./models/User');
 //   //     url: 'https://apod.nasa.gov/apod/image/2105/Ngc602_Hubble_960.jpg',
 //   //   }
 //   // ]
-
 // });
-
 // userProfile.save().then(() => console.log('successfully saved', userProfile));
 
 const PORT = process.env.PORT || 3001;
@@ -69,17 +67,13 @@ app.post('/insert', async (req, res) => {
   res.send('🚀 Hello Fellow Space Cadet');
 });
 
-
 app.get('/userdata', (req, res) => {
   UserModel.find((arr,userData) => {
     res.send(userData)
   });
 });
 
-
-
 // app.get();
-
 
 console.log('❤️ Hello sPaCe CaDeTs welcome to the back-end! ❤️');
 app.listen(PORT, () => console.log(`Listening on ${PORT}`));
