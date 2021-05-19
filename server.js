@@ -62,14 +62,15 @@ app.get('/user', (req, res) => {
 app.post('/user', (req, res) => {
   console.log('====', req.body);
   //Check if user exists
-  User.find({ userEmail: req.body.email }, (err, databaseResults) => {
-    console.log('before if', databaseResults);
+  User.find({ userEmail: req.body.email}, (err, databaseResults) => {
+    console.log(databaseResults);
+    console.log(req.body.email);
     if (databaseResults.length < 1) {
-      res.status(400).send('Error: user not found');
+      // res.status(400).send('Error: user not found');
 
       //If user is not there create a new user
       let newUser = new User({
-        userEmail: req.body.userEmail,
+        userEmail: req.body.email,
         favoriteImages:
           [{
             title: req.body.title,
