@@ -66,15 +66,25 @@ app.post('/insert', (req, res) => {
       });
     } else {
       let user = userData[0];
-      user.favoriteImages.push({
-        title: req.body.title,
-        date: req.body.date,
-        url: req.body.url,
-      });
-      user.save().then((userData) => {
-        console.log(userData);
-        res.send(userData.favoriteImages);
-      });
+      let flag = false;
+
+      for (let i=0; i < user.favoriteImages.length; i++) {
+        if (user.favoriteImages[i].url === req.body.url) flag = true;
+      } 
+      if (flag === true) {
+        console.log('image already saved');
+        res.send(user.favoriteImages);
+      } else {
+        user.favoriteImages.push({
+          title: req.body.title,
+          date: req.body.date,
+          url: req.body.url,
+        });
+        user.save().then((userData) => {
+          console.log('image not saved', userData);
+          res.send(userData.favoriteImages);
+        });
+      }
     }
   });
 });
