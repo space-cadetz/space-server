@@ -8,7 +8,7 @@ const imageOfTheDaySchema = new Schema({
 
   // date: {type: Date, default: Date.now},
   date: String,
-  explaination: String,
+  explanation: String,
   url: String,
 });
 

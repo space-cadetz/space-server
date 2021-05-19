@@ -15,11 +15,9 @@ const mongoose = require('mongoose');
 // hey mongoose, connect to the database at localhost:27017
 mongoose.connect(process.env.DATABASE_URL, { useNewUrlParser: true, useUnifiedTopology: true });
 
-
-const UserModel = require('./models/User');
 const User = require('./models/User');
 
-// const userProfile = new UserModel({
+// const userProfile = new User({
 //   // userEmail: 'aloysiousx@gmail.com',
 //   // favoriteImages: [
 //   //   {
@@ -34,7 +32,7 @@ const User = require('./models/User');
 //   //   {
 //   //     title: 'NGC 602 and Beyond',
 //   //     date: '2021-05-16',
-//   //     explaination: 'The clouds may look like an oyster, and the stars like pearls, but look beyond. Near the outskirts of the Small Magellanic Cloud, a satellite galaxy some 200 thousand light-years distant, lies 5 million year young star cluster NGC 602. Surrounded by natal gas and dust, NGC 602 is featured in this stunning Hubble image of the region.',
+//   //     explanation: 'The clouds may look like an oyster, and the stars like pearls, but look beyond. Near the outskirts of the Small Magellanic Cloud, a satellite galaxy some 200 thousand light-years distant, lies 5 million year young star cluster NGC 602. Surrounded by natal gas and dust, NGC 602 is featured in this stunning Hubble image of the region.',
 //   //     url: 'https://apod.nasa.gov/apod/image/2105/Ngc602_Hubble_960.jpg',
 //   //   }
 //   // ]
@@ -47,19 +45,37 @@ app.get('/', (req, res) => {
   res.send('🚀 Hello Fellow Space Cadet');
 });
 
-app.post('/insert', (req, res) => {
-  console.log(req.body);
-  User.find({ email: req.body.userEmail }, (err, userData) => {
-    if (userData.length < 1) {
+// app.get('/userdata', (req, res) => {
+//   User.find((arr, userData) => {
+//     res.send(userData);
+//   });
+// });
+
+app.get('/user', (req, res) => {
+  console.log('request :', req.query);
+  User.find({ userEmail: req.query.userEmail }, (err, databaseResults) => {
+    console.log('data base results', databaseResults);
+    res.send(databaseResults);
+  });
+});
+
+app.post('/user', (req, res) => {
+  console.log('====', req.body);
+  //Check if user exists
+  User.find({ userEmail: req.body.email }, (err, databaseResults) => {
+    console.log('before if', databaseResults);
+    if (databaseResults.length < 1) {
+      res.status(400).send('Error: user not found');
+
+      //If user is not there create a new user
       let newUser = new User({
-        email: req.body.userEmail,
-        favoriteImages: [
-          {
+        userEmail: req.body.userEmail,
+        favoriteImages:
+          [{
             title: req.body.title,
             date: req.body.date,
             url: req.body.url,
-          }
-        ],
+          }],
       });
       newUser.save().then(newUserData => {
         res.send(newUserData.favoriteImages);
@@ -85,34 +101,33 @@ app.post('/insert', (req, res) => {
           res.send(userData.favoriteImages);
         });
       }
+      console.log('inside else');
+      //If user is found, add favorite images info to that user
+      let foundUser = databaseResults[0];
+      foundUser.favoriteImages.push({
+        title: req.body.title,
+        date: req.body.date,
+        url: req.body.url,
+      });
+      foundUser.save().then((databaseResults) => {
+        console.log(databaseResults);
+        res.send(databaseResults.favoriteImages);
+      });
     }
   });
 });
 
-// const { email, title, date, url } = req.body;
-// const newImage = { title, date, url};
-// console.log(newImage);
-
-// const userProfile = await new UserModel({
-//   userEmail: email,
-//   favoriteImages: [
-//     {
-//       title,
-//       date,
-//       url,
-//     }
-//   ],
-// }).save();
-// console.log('successfully saved', userProfile);
-// res.send('🚀 Hello Fellow Space Cadet');
-
-app.get('/userdata', (req, res) => {
-  UserModel.find((arr, userData) => {
-    res.send(userData);
+app.delete('/user/:id', (req, res) => {
+  console.log('delete called');
+  let userEmail = req.query.userEmail;
+  User.find({ userEmail: userEmail }, (err, userData) => {
+    let user = userData[0];
+    user.favoriteImages = user.favoriteImages.filter(image => `${image._id}` !== req.params.id);
+    user.save().then(userData => {
+      res.send(userData.favoriteImages);
+    });
   });
 });
-
-// app.get();
 
 console.log('❤️ Hello sPaCe CaDeTs welcome to the back-end! ❤️');
 app.listen(PORT, () => console.log(`Listening on ${PORT}`));
