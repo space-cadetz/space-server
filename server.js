@@ -97,17 +97,17 @@ app.post('/user', (req, res) => {
   });
 });
 
-// app.put('/images/:id', (req, res) = {
-//   User.find({ email: req.body.userEmail }, (err, databaseResults) => {
-//     let user = databaseResults[0];
-//     let favImageId = req.params.id;
-//     user.favoriteImages.forEach((image => {
-//       if(`${image._id}` === favImageId) {
-
-//       }
-//     })
-
-// } 
+app.delete('/user/:id', (req, res) => {
+  console.log('delete called');
+  let userEmail = req.query.userEmail;
+  User.find({ userEmail: userEmail }, (err, userData) => {
+    let user = userData[0];
+    user.favoriteImages = user.favoriteImages.filter(image => `${image._id}` !== req.params.id);
+    user.save().then(userData => {
+      res.send(userData.favoriteImages);
+    });
+  });
+});
 
 console.log('❤️ Hello sPaCe CaDeTs welcome to the back-end! ❤️');
 app.listen(PORT, () => console.log(`Listening on ${PORT}`));
