@@ -82,38 +82,38 @@ app.post('/user', (req, res) => {
         res.send(newUserData.favoriteImages);
       });
     } else {
-      let user = userData[0];
+      let foundUser = databaseResults[0];
+      // let user = userData[0];
       let flag = false;
 
-      for (let i=0; i < user.favoriteImages.length; i++) {
-        if (user.favoriteImages[i].url === req.body.url) flag = true;
+      for (let i=0; i < foundUser.favoriteImages.length; i++) {
+        if (foundUser.favoriteImages[i].url === req.body.url) flag = true;
       } 
       if (flag === true) {
-        console.log('image already saved');
-        res.send(user.favoriteImages);
+        console.log('image already saved to database');
+        res.send(foundUser.favoriteImages);
       } else {
-        user.favoriteImages.push({
+        foundUser.favoriteImages.push({
           title: req.body.title,
           date: req.body.date,
           url: req.body.url,
         });
-        user.save().then((userData) => {
-          console.log('image not saved', userData);
-          res.send(userData.favoriteImages);
+        foundUser.save().then((databaseResults) => {
+          console.log('image not in database', databaseResults);
+          res.send(databaseResults.favoriteImages);
         });
       }
-      console.log('inside else');
+      // console.log('inside else');
       //If user is found, add favorite images info to that user
-      let foundUser = databaseResults[0];
-      foundUser.favoriteImages.push({
-        title: req.body.title,
-        date: req.body.date,
-        url: req.body.url,
-      });
-      foundUser.save().then((databaseResults) => {
-        console.log(databaseResults);
-        res.send(databaseResults.favoriteImages);
-      });
+      // foundUser.favoriteImages.push({
+      //   title: req.body.title,
+      //   date: req.body.date,
+      //   url: req.body.url,
+      // });
+      // foundUser.save().then((databaseResults) => {
+      //   console.log(databaseResults);
+      //   res.send(databaseResults.favoriteImages);
+      // });
     }
   });
 });
