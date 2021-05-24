@@ -3,7 +3,6 @@
 
 **Authors**
 
-
 <div align="center">
 <a href="https://github.com/Edward-Regalado">Edward-Regalado</a>
 <br>
@@ -27,7 +26,7 @@
 <!-- What are the steps that a user must take in order to build this app on their own machine and get it running? -->
 
 1. clone repo
-2. install package.json : `npm init`
+2. install package.json : `npm install` <!-- close -->
 3. Create a `.env` file at the root of your project.
 4. Copy and paste the following line(s) of code into the file you just created:
 
@@ -35,8 +34,11 @@
 PORT=3001
 ````
 
+<!-- this definitely also requires a DATABASE_URL in your .env file -->
+
 5. install the following dependencies :
 
+<!-- not required, npm i does this -->
 ````sh
 npm install Auth0 axios dotenv cors express mongoose 
 ````
